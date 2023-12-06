@@ -1,11 +1,13 @@
 // Advent of Code - Day 1 - Part One
 
 export function part1(input: string): number {
-  const arrOfLines: string[] = input.split('\n')//.map((line) => parseInt(line));
-  arrOfLines.pop();
-  let result: number = 0;
+  const arrayOfLines: string[] = input.split('\n');
+  if (arrayOfLines[arrayOfLines.length - 1] == "") {
+    arrayOfLines.pop()
+  }
+  let result = 0;
 
-  arrOfLines.forEach(line => {
+  arrayOfLines.forEach(line => {
     result += filterLineNumber(line)
   })
 
@@ -13,13 +15,17 @@ export function part1(input: string): number {
 }
 
 function filterLineNumber(line: string): number {
-  const arrayOfNumbers = line.split("").filter(x => {
-    if (!isNaN(parseInt(x))) {
-      return x
+  const arrayOfNumbers: string[] = line.split("").filter(element => {
+    if (!isNaN(parseInt(element))) {
+      return element;
     }
   })
-  const addedNumbers = arrayOfNumbers.length > 1 ? (arrayOfNumbers[0] + arrayOfNumbers[arrayOfNumbers.length - 1]) : (arrayOfNumbers[0] + arrayOfNumbers[0])
+
+  const first: string = arrayOfNumbers[0]
+  const last: string = arrayOfNumbers.at(-1) ?? ''
+  const addedNumbers: number = arrayOfNumbers.length > 1 ? parseInt(first + last) : parseInt(first + first);
 
 
-  return parseInt(addedNumbers);
+
+  return addedNumbers
 }

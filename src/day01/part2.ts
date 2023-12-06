@@ -1,29 +1,58 @@
 // Advent of Code - Day 1 - Part Two
 
 export function part2(input: string): number {
-  const arrOfLines: string[] = input.split('\n')//.map((line) => parseInt(line));
-  arrOfLines.pop();
-  //console.log(arrOfLines);
-  let result: number = 0;
-  arrOfLines.forEach(line => {
-    result += filterLineNumber(line)
+  const arrayOfLines: string[] = input.split('\n')
+
+  if (arrayOfLines[arrayOfLines.length - 1] == "") {
+    arrayOfLines.pop();
+  }
+
+  let result = 0;
+  arrayOfLines.forEach(line => {
+    result += filteredLineNumber(line);
   })
 
   return result;
 }
 
-const writedNumbers: string[] = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
-function filterLineNumber(line: string): number {
-  let lineFull = line
-  writedNumbers.forEach((element, index) => {
-    if (line.includes(element)) {
-      lineFull = line.replaceAll(element, (index + 1).toString())
-      line = lineFull
+function filteredLineNumber(line: string): number {
+  const writtenNumbers: string[] = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+
+  const arr: number[] = [];
+
+
+  writtenNumbers.forEach((element, index) => {
+    let partialLine: string = line;
+    if (partialLine.includes(element)) {
+      while (partialLine.includes(element)) {
+        arr[partialLine.indexOf(element)] = index + 1;
+        partialLine = partialLine.replace(element, ("-".repeat(element.length)).toString());
+      }
+      partialLine = line;
     }
   });
-  console.log(lineFull);
+
+  line.split('').forEach((element, index) => {
+    if (!isNaN(parseInt(element))) {
+      arr[index] = parseInt(element);
+    }
+  })
+
+  const finalArr: string[] = arr.filter(element => {
+    if (!isNaN(element)) {
+      return element;
+    }
+  }).map(element => {
+    return element.toString();
+  })
+
+  const first: string = finalArr[0];
+  const last: string = finalArr.at(-1) ?? '';
+
+  const addedNumbers: number = finalArr.length > 1 ? parseInt(first + last) : parseInt(first + first);
 
 
-  return 0
+
+  return addedNumbers
 }
