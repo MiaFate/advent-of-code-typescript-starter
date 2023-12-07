@@ -6,28 +6,25 @@ interface Game {
 }
 
 export function part1(input: string): number {
+  if (input.trim() == "") return 0
   const arrayOfLines: string[] = input.split('\n');
-  if (arrayOfLines[arrayOfLines.length - 1] == "") {
-    arrayOfLines.pop()
-  }
   let result = 0;
+
 
   arrayOfLines.forEach(line => {
     result += possibleGame(line)
-    console.log(result);
-    console.log("---");
-
   })
   return result;
 }
 
 function possibleGame(line: string) {
-  const bagCubes = { red: 12, green: 13, blue: 14 }
+  const bagCubes: Game = { red: 12, green: 13, blue: 14 }
+
   const lineArray: string[] = line.split(':')
   const gameId: number = parseInt(lineArray[0].split(" ").at(-1)!);
   const sets = lineArray[1].split(";")
   let gameSet: Game[] = [{ red: 0, green: 0, blue: 0 }]
-  console.log(lineArray);
+  // console.log(lineArray);
 
   gameSet = sets.map(element => {
 
@@ -38,41 +35,35 @@ function possibleGame(line: string) {
     })
 
     const obj = Object.fromEntries(elementos)
+    //console.log(obj);
+
     return obj
   });
 
 
-  let totalGame: Game = gamesReducer(gameSet)
-  console.log(totalGame);
-
-
-  if (totalGame.red > bagCubes.red) {
+  if (!checking(gameSet)) {
     return 0
   }
-
-  if (totalGame.green > bagCubes.green) {
-    return 0
-  }
-  if (totalGame.blue > bagCubes.blue) {
-    return 0
-  }
-
-
-  console.log(gameId);
 
   return gameId
 }
 
-function gamesReducer(gameSet: Game[]) {
-
-  let totalGame = gameSet.reduce((acc, curr) => {
-    let red = curr.red ? acc.red + curr.red : acc.red;
-    let green = curr.green ? acc.green + curr.green : acc.green;
-    let blue = curr.blue ? acc.blue + curr.blue : acc.blue;
-    return { red, green, blue }
-  }, { red: 0, green: 0, blue: 0 } as Game)
 
 
-  return totalGame
+function checking(gameSet: Game[]) {
+  const bagCubes: Game = { red: 12, green: 13, blue: 14 }
+  let isPossible = true
+  gameSet.forEach(x => {
+    if (x.red > bagCubes.red) {
+      isPossible = false
+    }
+    if (x.green > bagCubes.green) {
+      isPossible = false
+    }
+    if (x.blue > bagCubes.blue) {
+      isPossible = false
+    }
+  })
 
+  return isPossible
 }
