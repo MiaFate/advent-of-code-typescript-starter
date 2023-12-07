@@ -6,7 +6,8 @@
     "start": "./scripts/start.sh",
     "test": "./scripts/test.sh",
     "lint": "./scripts/lint.sh",
-    "gen": "./scripts/gen.sh"
+    "gen": "./scripts/gen.sh",
+    "test2": "jest --coverage"
   },
   "keywords": [
     "aoc",

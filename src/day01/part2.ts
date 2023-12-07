@@ -16,7 +16,7 @@ export function part2(input: string): number {
 }
 
 
-function filteredLineNumber(line: string): number {
+export function filteredLineNumber(line: string): number {
   const writtenNumbers: string[] = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
   const arr: number[] = [];
@@ -47,12 +47,10 @@ function filteredLineNumber(line: string): number {
     return element.toString();
   })
 
-  const first: string = finalArr[0];
+  const first: string = finalArr[0] ?? "0";
   const last: string = finalArr.at(-1) ?? '';
 
   const addedNumbers: number = finalArr.length > 1 ? parseInt(first + last) : parseInt(first + first);
-
-
 
   return addedNumbers
 }
