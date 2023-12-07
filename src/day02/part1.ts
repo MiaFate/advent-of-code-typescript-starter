@@ -10,60 +10,40 @@ export function part1(input: string): number {
   const arrayOfLines: string[] = input.split('\n');
   let result = 0;
 
-
   arrayOfLines.forEach(line => {
-    result += possibleGame(line)
+    result += findIdOfPossibleGame(line)
   })
+
   return result;
 }
 
-function possibleGame(line: string) {
-  const bagCubes: Game = { red: 12, green: 13, blue: 14 }
+function findIdOfPossibleGame(line: string) {
 
   const lineArray: string[] = line.split(':')
-  const gameId: number = parseInt(lineArray[0].split(" ").at(-1)!);
-  const sets = lineArray[1].split(";")
-  let gameSet: Game[] = [{ red: 0, green: 0, blue: 0 }]
-  // console.log(lineArray);
+  let gameId: number = parseInt(lineArray[0].split(" ").at(-1)!);
+  const games: string[] = lineArray[1].split(";")
 
-  gameSet = sets.map(element => {
+  games.forEach(gameAsString => {
+    const bagCubes: Game = { red: 12, green: 13, blue: 14 }
 
-    const elementos = element.trim().split(',').map(x => {
-      let splitted: any[] = x.trim().split(" ").reverse()
-      splitted[1] = parseInt(splitted[1])
-      return splitted
-    })
+    const gameArray: (string | number)[][] = gameAsString.trim().split(',').map(setAsString => {
+      const [qty, colour] = setAsString.trim().split(" ") ?? ['0', 'red']
+      return [colour, parseInt(qty)]
+    }) ?? [['blue', 0], ['green', 0], ['red', 0]]
 
-    const obj = Object.fromEntries(elementos)
-    //console.log(obj);
+    const game: Game = Object.fromEntries(gameArray);
 
-    return obj
+    if (game.red > bagCubes.red) {
+      gameId = 0
+    }
+    if (game.green > bagCubes.green) {
+      gameId = 0
+    }
+    if (game.blue > bagCubes.blue) {
+      gameId = 0
+    }
+
   });
 
-
-  if (!checking(gameSet)) {
-    return 0
-  }
-
   return gameId
-}
-
-
-
-function checking(gameSet: Game[]) {
-  const bagCubes: Game = { red: 12, green: 13, blue: 14 }
-  let isPossible = true
-  gameSet.forEach(x => {
-    if (x.red > bagCubes.red) {
-      isPossible = false
-    }
-    if (x.green > bagCubes.green) {
-      isPossible = false
-    }
-    if (x.blue > bagCubes.blue) {
-      isPossible = false
-    }
-  })
-
-  return isPossible
 }
