@@ -17,8 +17,6 @@ export function part1(input: string): number {
     console.log(result);
     console.log("---");
 
-
-    // result
   })
   return result;
 }
@@ -40,18 +38,15 @@ function possibleGame(line: string) {
     })
 
     const obj = Object.fromEntries(elementos)
-    //console.log(obj)
     return obj
   });
-  // console.log(gameSet);
-  // console.log("---");
 
 
   let totalGame: Game = gamesReducer(gameSet)
   console.log(totalGame);
 
 
-  if (totalGame?.red > bagCubes.red) {
+  if (totalGame.red > bagCubes.red) {
     return 0
   }
 
@@ -63,23 +58,15 @@ function possibleGame(line: string) {
   }
 
 
-
-  //console.log(gameId, gameSet, totalGame.blue);
   console.log(gameId);
 
   return gameId
 }
 
 function gamesReducer(gameSet: Game[]) {
-  //let totalGame: Game = {}
-  // gameSet.forEach(element => {
 
-  // });
   let totalGame = gameSet.reduce((acc, curr) => {
     let red = curr.red ? acc.red + curr.red : acc.red;
-    // console.log(`red ${red}`, "acc", acc, "curr", curr);
-
-
     let green = curr.green ? acc.green + curr.green : acc.green;
     let blue = curr.blue ? acc.blue + curr.blue : acc.blue;
     return { red, green, blue }
