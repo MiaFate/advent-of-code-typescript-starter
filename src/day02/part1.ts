@@ -1,10 +1,10 @@
 // Advent of Code - Day 2 - Part One
-interface Game {
+interface CubeSubset {
   red: number;
   green: number;
   blue: number;
 }
-const bagCubes = { red: 12, green: 13, blue: 14 } as const
+const bagOfCubes = { red: 12, green: 13, blue: 14 } as const
 
 export function part1(input: string): number {
   if (input.trim() == "") return 0
@@ -22,18 +22,18 @@ function findIdOfPossibleGame(line: string) {
 
   const lineArray: string[] = line.split(':')
   let gameId: number = parseInt(lineArray[0].split(" ").at(-1) ?? '0');
-  const games: string[] = lineArray[1].split(";")
+  const sets: string[] = lineArray[1].split(";")
 
-  games.forEach(gameAsString => {
+  sets.forEach(subsetAsString => {
 
-    const gameArray: (string | number)[][] = gameAsString?.trim().split(',').map(setAsString => {
-      const [qty, colour] = setAsString.trim().split(" ") ?? ['0', 'red']
-      return [colour, parseInt(qty)]
+    const cubeSubsetArray: (string | number)[][] = subsetAsString?.trim().split(',').map(cubeAsString => {
+      const [quantity, colour] = cubeAsString.trim().split(" ") ?? ['0', 'red']
+      return [colour, parseInt(quantity)]
     })
 
-    const gameObject: Game = Object.fromEntries(gameArray);
+    const cubeSubsetObject: CubeSubset = Object.fromEntries(cubeSubsetArray);
     //      ^?
-    if (gameObject.red > bagCubes.red || gameObject.green > bagCubes.green || gameObject.blue > bagCubes.blue) {
+    if (cubeSubsetObject.red > bagOfCubes.red || cubeSubsetObject.green > bagOfCubes.green || cubeSubsetObject.blue > bagOfCubes.blue) {
       gameId = 0
     }
 
