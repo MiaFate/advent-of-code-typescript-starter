@@ -31,7 +31,7 @@ function findIdOfPossibleGame(line: string) {
       return [colour, parseInt(quantity)]
     })
 
-    const cubeSubsetObject: CubeSubset = Object.fromEntries(cubeSubsetArray);
+    const cubeSubsetObject: CubeSubset = Object.fromEntries(cubeSubsetArray) as CubeSubset;
     //      ^?
     if (cubeSubsetObject.red > bagOfCubes.red || cubeSubsetObject.green > bagOfCubes.green || cubeSubsetObject.blue > bagOfCubes.blue) {
       gameId = 0

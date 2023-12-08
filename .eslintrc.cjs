@@ -1,4 +1,4 @@
-{
+module.exports = {
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
@@ -7,7 +7,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked"
   ],
   "env": {
     "node": true,
@@ -15,7 +16,12 @@
   },
   "parserOptions": {
     "ecmaVersion": 2021,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": true,
+    "tsconfigRootDir": __dirname
   },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
@@ -26,6 +32,13 @@
         "ignoreRestSiblings": true,
         "varsIgnorePattern": "^_"
       }
-    ]
-  }
+    ],
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-floating-promises": "off"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    ".eslintrc.cjs",
+  ],
 }
