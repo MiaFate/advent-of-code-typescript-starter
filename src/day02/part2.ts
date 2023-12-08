@@ -1,11 +1,10 @@
 // Advent of Code - Day 2 - Part Two
-// Advent of Code - Day 2 - Part One
-interface Game {
+interface CubeSubset {
   red: number;
   green: number;
   blue: number;
 }
-const bagCubes = { red: 12, green: 13, blue: 14 } as const
+
 export function part2(input: string): number {
   const arrayOfLines: string[] = input.split('\n');
   if (input.trim() == "") return 0
@@ -20,24 +19,31 @@ export function part2(input: string): number {
 
 function findIdOfPossibleGame(line: string) {
 
-  const lineArray: string[] = line.split(':')
-  let gameId: number = parseInt(lineArray[0].split(" ").at(-1) ?? '0');
-  const games: string[] = lineArray[1].split(";")
+  const [_, gameSet] = line.split(':')
+  const sets: string[] = gameSet.split(";")
 
-  games.forEach(gameAsString => {
+  const minimumSetPossible = { red: 0, green: 0, blue: 0 };
 
-    const gameArray: (string | number)[][] = gameAsString?.trim().split(',').map(setAsString => {
-      const [qty, colour] = setAsString.trim().split(" ") ?? ['0', 'red']
-      return [colour, parseInt(qty)]
+  sets.forEach(subsetAsString => {
+
+    const cubeSubsetArray: (string | number)[][] = subsetAsString?.trim().split(',').map(cubeAsString => {
+      const [quantity, colour] = cubeAsString.trim().split(" ") ?? ['0', 'red']
+      return [colour, parseInt(quantity)]
     })
 
-    const gameObject: Game = Object.fromEntries(gameArray);
-    //      ^?
-    if (gameObject.red > bagCubes.red || gameObject.green > bagCubes.green || gameObject.blue > bagCubes.blue) {
-      gameId = 0
+    const cubeSubsetObject: CubeSubset = Object.fromEntries(cubeSubsetArray);
+
+    if (cubeSubsetObject.red > minimumSetPossible.red) {
+      minimumSetPossible.red = cubeSubsetObject.red
+    }
+    if (cubeSubsetObject.green > minimumSetPossible.green) {
+      minimumSetPossible.green = cubeSubsetObject.green
+    }
+    if (cubeSubsetObject.blue > minimumSetPossible.blue) {
+      minimumSetPossible.blue = cubeSubsetObject.blue
     }
 
   });
-
-  return gameId
+  const power = minimumSetPossible.red * minimumSetPossible.green * minimumSetPossible.blue
+  return power
 }
