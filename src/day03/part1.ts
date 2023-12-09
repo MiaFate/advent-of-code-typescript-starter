@@ -1,82 +1,84 @@
 // Advent of Code - Day 3 - Part One
+
 interface MatchedNumber {
-  numero: number;
-  largo: number;
-  posicion: number;
-  linea: number;
+  foundNumber: number;
+  numberLong: number;
+  position: number;
+  line: number;
 }
 export function part1(input: string): number {
   if (input.trim() == "") return 0
-  const re = /\w+/g
   let result = 0
-  const arr = [[1, 3, 4], [2, 3, 4, 4, 6]]
-
-  console.log(arr[1].length);
-  console.log(arr.length);
-
 
   const arrayOfLines: string[] = input.split('\n');
-  const numbers: MatchedNumber[] = []
+  const numbersObject: MatchedNumber[] = []
 
+  //look for numbers in arrayOfLines line by line replacing with dots on cleanArrayOfLines and adding the numbers found to numbersObject
   const cleanArrayOfLines = arrayOfLines.map((line, index) => {
+    const re = /\w+/g
     return line.replace(re, (match, offset) => {
-      numbers.push({ numero: parseInt(match), largo: match.length, posicion: offset as number, linea: index })
+      numbersObject.push({ foundNumber: parseInt(match), numberLong: match.length, position: offset as number, line: index })
       return (".".repeat(match.length))
     })
   })
 
+  //create a matrix of dots and symbols from clean array of lines
   const matrixOfLines = cleanArrayOfLines.map(line => {
     const arr = line.split('')
     return arr
   })
 
-  numbers.forEach(numero => {
+  //for each number found in the input will check if is surrounded by any symbol
+  numbersObject.forEach(numero => {
     if (checkNumbers(numero, matrixOfLines)) {
-      result += numero.numero
+      result += numero.foundNumber
     }
-
   })
 
   return result;
 }
 
-function checkNumbers(numero: MatchedNumber, matrixOfLines: string[][]): boolean {
+function checkNumbers({ numberLong, position, line }: MatchedNumber, matrixOfLines: string[][]): boolean {
 
-  let posicion = numero.posicion
-  for (let index = 0; index < numero.largo; index++) {
+  const topLineExist = line - 1 >= 0;
+  const botLineExist = line + 1 < matrixOfLines.length;
+  const leftPositionExist = position - 1 >= 0;
+  const rightPositionExist = (index: number) => position + 1 < matrixOfLines[index].length;
 
-    if ((numero.linea - 1) >= 0 && (posicion - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion - 1] !== '.') {//
-      return true
-    }
-    if ((numero.linea - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion] !== '.') {
-      return true
-    }
-    if ((numero.linea - 1) >= 0 && (posicion + 1 <= matrixOfLines[numero.linea - 1].length - 1) && matrixOfLines[numero.linea - 1][posicion + 1] !== '.') {
-      return true
-    }
+  //if any of this conditions is true the number must be added else the number will be ignored
+  for (let index = 0; index < numberLong; index++) {
 
-    if ((posicion - 1) >= 0 && matrixOfLines[numero.linea][posicion - 1] !== '.') {
+    if (topLineExist && leftPositionExist && matrixOfLines[line - 1][position - 1] !== '.') { //check top - left
       return true
     }
-    if ((posicion + 1) <= (matrixOfLines[numero.linea].length - 1) && matrixOfLines[numero.linea][posicion + 1] !== '.') {
+    if (topLineExist && matrixOfLines[line - 1][position] !== '.') { //check top - middle
+      return true
+    }
+    if (topLineExist && rightPositionExist(line - 1) && matrixOfLines[line - 1][position + 1] !== '.') { //check top - right
       return true
     }
 
-    if ((numero.linea + 1 < matrixOfLines.length) && (posicion - 1 >= 0) && matrixOfLines[numero.linea + 1][posicion - 1] !== '.') {
+    if (leftPositionExist && matrixOfLines[line][position - 1] !== '.') { //check left
       return true
     }
-    if ((numero.linea + 1 < matrixOfLines.length) && matrixOfLines[numero.linea + 1][posicion] !== '.') {
+    if (rightPositionExist(line) && matrixOfLines[line][position + 1] !== '.') { //check right
       return true
     }
-    if ((numero.linea + 1 < matrixOfLines.length) && (posicion + 1 < matrixOfLines[numero.linea + 1].length) && matrixOfLines[numero.linea + 1][posicion + 1] !== '.') {
+
+    if (botLineExist && leftPositionExist && matrixOfLines[line + 1][position - 1] !== '.') { // check bottom left
       return true
     }
-    posicion += 1
+    if (botLineExist && matrixOfLines[line + 1][position] !== '.') { // check bottom middle
+      return true
+    }
+    if (botLineExist && rightPositionExist(line + 1) && matrixOfLines[line + 1][position + 1] !== '.') { //check bottom right
+      return true
+    }
+
+    position += 1
 
   }
   return false
 
 
 }
-
-
