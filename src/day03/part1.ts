@@ -29,9 +29,9 @@ export function part1(input: string): number {
   })
 
   //for each number found in the input will check if is surrounded by any symbol
-  numbersObject.forEach(numero => {
-    if (checkNumbers(numero, matrixOfLines)) {
-      result += numero.foundNumber
+  numbersObject.forEach(element => {
+    if (checkNumbers(element, matrixOfLines)) {
+      result += element.foundNumber
     }
   })
 
