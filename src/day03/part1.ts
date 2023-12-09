@@ -9,6 +9,11 @@ export function part1(input: string): number {
   if (input.trim() == "") return 0
   const re = /\w+/g
   let result = 0
+  const arr = [[1, 3, 4], [2, 3, 4, 4, 6]]
+
+  console.log(arr[1].length);
+  console.log(arr.length);
+
 
   const arrayOfLines: string[] = input.split('\n');
   const numbers: MatchedNumber[] = []
@@ -27,84 +32,51 @@ export function part1(input: string): number {
 
   numbers.forEach(numero => {
     if (checkNumbers(numero, matrixOfLines)) {
-      //console.log(numero);
-
       result += numero.numero
     }
-    //console.log(result);
 
   })
-
-  // console.log(numbers);
-  // console.log(matrixOfLines);
 
   return result;
 }
 
 function checkNumbers(numero: MatchedNumber, matrixOfLines: string[][]): boolean {
 
-  // const coord = []
   let posicion = numero.posicion
   for (let index = 0; index < numero.largo; index++) {
-    //console.log(posicion);
 
-
-    if ((numero.linea - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion - 1] !== '.') {//
+    if ((numero.linea - 1) >= 0 && (posicion - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion - 1] !== '.') {//
       return true
     }
     if ((numero.linea - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion] !== '.') {
       return true
     }
-    if ((numero.linea - 1) >= 0 && matrixOfLines[numero.linea - 1][posicion + 1] !== '.') {
+    if ((numero.linea - 1) >= 0 && (posicion + 1 <= matrixOfLines[numero.linea - 1].length - 1) && matrixOfLines[numero.linea - 1][posicion + 1] !== '.') {
       return true
     }
 
     if ((posicion - 1) >= 0 && matrixOfLines[numero.linea][posicion - 1] !== '.') {
       return true
     }
-    // if (matrixOfLines[numero.linea][posicion] !== '.') {
-    //   return true
-    // }
     if ((posicion + 1) <= (matrixOfLines[numero.linea].length - 1) && matrixOfLines[numero.linea][posicion + 1] !== '.') {
       return true
     }
-    // && (posicion - 1 >= 0)
-    if ((numero.linea + 1 < matrixOfLines[numero.linea].length) && matrixOfLines[numero.linea + 1][posicion - 1] !== '.') {
+
+    if ((numero.linea + 1 < matrixOfLines.length) && (posicion - 1 >= 0) && matrixOfLines[numero.linea + 1][posicion - 1] !== '.') {
       return true
     }
-    if ((numero.linea + 1 < matrixOfLines[numero.linea].length) && matrixOfLines[numero.linea + 1][posicion] !== '.') {
+    if ((numero.linea + 1 < matrixOfLines.length) && matrixOfLines[numero.linea + 1][posicion] !== '.') {
       return true
     }
-    if ((numero.linea + 1 < matrixOfLines[numero.linea].length) && matrixOfLines[numero.linea + 1][posicion + 1] !== '.') {
+    if ((numero.linea + 1 < matrixOfLines.length) && (posicion + 1 < matrixOfLines[numero.linea + 1].length) && matrixOfLines[numero.linea + 1][posicion + 1] !== '.') {
       return true
     }
-    // coord.push([numero.linea, posicion])
     posicion += 1
 
   }
-  // console.log(coord);
   return false
 
 
 }
-// console.log(input.replace(re, (match, offset) => {
-//   console.log(offset);
-//   numbers.push({ largo: match.length, numero: parseInt(match), posicion: offset as number })
-//   return ("n".repeat(match.length))
-// }))
 
-
-// arrayOfLines.forEach(element => {
-// });
-// const matrixOfLines = arrayOfLines.map(line => {
-//   const arr = line.split('')
-//   return arr
-// })
-// matrixOfLines.forEach((line, lineIndex)=>{
-//   line.forEach((element, elementIndex)=>{
-//     if (matrixOfLines[lineIndex][]) {
-
-//     }
-//   })
-// })
 
